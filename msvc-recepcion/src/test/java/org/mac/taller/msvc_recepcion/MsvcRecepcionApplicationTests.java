@@ -1,0 +1,13 @@
+package org.mac.taller.msvc_recepcion;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class MsvcRecepcionApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

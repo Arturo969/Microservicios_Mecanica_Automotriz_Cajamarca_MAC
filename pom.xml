@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.0</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>org.valdiviezo.springcloud.msvc</groupId>
+    <artifactId>Microservicios_Mecanica_Automotriz_Cajamarca_MAC</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <!-- Declaración de todos los microservicios (agregados) -->
+    <modules>
+        <!-- Recepción y Diagnóstico -->
+        <module>msvc-cliente</module>
+        <module>msvc-vehiculo</module>
+        <module>msvc-recepcion</module>
+        <module>msvc-cotizacion</module>
+
+        <!-- Operaciones de Taller -->
+        <module>msvc-orden-trabajo</module>
+        <module>msvc-bahia</module>
+
+        <!-- Calidad y Entrega -->
+        <module>msvc-calidad</module>
+        <module>msvc-entrega</module>
+
+        <!-- Inventario -->
+        <module>msvc-repuesto</module>
+        <module>msvc-reserva</module>
+
+        <!-- Agendamiento y Personal -->
+        <module>msvc-cita</module>
+        <module>msvc-tecnico</module>
+
+        <!-- Facturación -->
+        <module>msvc-comprobante</module>
+    </modules>
+    <properties>
+        <maven.compiler.source>26</maven.compiler.source>
+        <maven.compiler.target>26</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>
