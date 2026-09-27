@@ -1,0 +1,79 @@
+package org.mac.taller.msvc_cotizacion.controllers;
+
+import org.mac.taller.msvc_cotizacion.models.entity.AutorizacionCliente;
+import org.mac.taller.msvc_cotizacion.models.entity.Cotizacion;
+import org.mac.taller.msvc_cotizacion.services.CotizacionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/cotizacion")
+public class CotizacionController {
+    @Autowired
+    private CotizacionService service;
+
+    @GetMapping
+    public List<Cotizacion> listar() { return service.listar(); }
+
+    @PostMapping
+    public ResponseEntity<?> crear(@RequestBody Cotizacion c) {
+        return ResponseEntity.ok(service.guardar(c));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> detalle(@PathVariable Long id) {
+        Optional<Cotizacion> o = service.porId(id);
+        if(o.isPresent()) {
+            return ResponseEntity.ok(o.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+    
+    @PutMapping("/{id}/aprobar")
+    public ResponseEntity<?> aprobar(@PathVariable Long id, @RequestBody AutorizacionCliente auth) {
+        Optional<Cotizacion> o = service.porId(id);
+        if(o.isPresent()) {
+            Cotizacion c = o.get();
+            try {
+                c.aprobar(auth);
+                return ResponseEntity.ok(service.guardar(c));
+            } catch (IllegalStateException e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar(@RequestBody Cotizacion cotAct, @PathVariable Long id) {
+        Optional<Cotizacion> o = service.porId(id);
+        if(o.isPresent()) {
+            Cotizacion db = o.get();
+            db.setVehiculoId(cotAct.getVehiculoId());
+            db.setEstado(cotAct.getEstado());
+            db.setTotalEstimado(cotAct.getTotalEstimado());
+            db.setDiasInactividadEstimados(cotAct.getDiasInactividadEstimados());
+            db.setFechaCreacion(cotAct.getFechaCreacion());
+            
+            db.getItems().clear();
+            db.getItems().addAll(cotAct.getItems());
+            
+            return ResponseEntity.ok(service.guardar(db));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        Optional<Cotizacion> o = service.porId(id);
+        if(o.isPresent()) {
+            service.eliminar(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+}

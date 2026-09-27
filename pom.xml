@@ -15,30 +15,12 @@
     <packaging>pom</packaging>
     <!-- Declaración de todos los microservicios (agregados) -->
     <modules>
-        <!-- Recepción y Diagnóstico -->
-        <module>msvc-cliente</module>
-        <module>msvc-vehiculo</module>
-        <module>msvc-recepcion</module>
-        <module>msvc-cotizacion</module>
-
-        <!-- Operaciones de Taller -->
+        <!-- Operaciones de Taller (core del negocio)-->
         <module>msvc-orden-trabajo</module>
         <module>msvc-bahia</module>
-
-        <!-- Calidad y Entrega -->
-        <module>msvc-calidad</module>
-        <module>msvc-entrega</module>
-
-        <!-- Inventario -->
-        <module>msvc-repuesto</module>
-        <module>msvc-reserva</module>
-
-        <!-- Agendamiento y Personal -->
-        <module>msvc-cita</module>
         <module>msvc-tecnico</module>
-
-        <!-- Facturación -->
-        <module>msvc-comprobante</module>
+        <module>msvc-cotizacion</module>
+        <module>msvc-vehiculo</module>
     </modules>
     <properties>
         <maven.compiler.source>26</maven.compiler.source>
