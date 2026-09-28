@@ -1,8 +1,8 @@
-package org.mac.taller.msvc_cotizacion.controllers;
+package org.mac.taller.msvc_cotizacion.infraestructure.controller;
 
-import org.mac.taller.msvc_cotizacion.models.entity.AutorizacionCliente;
-import org.mac.taller.msvc_cotizacion.models.entity.Cotizacion;
-import org.mac.taller.msvc_cotizacion.services.CotizacionService;
+import org.mac.taller.msvc_cotizacion.domain.model.AutorizacionCliente;
+import org.mac.taller.msvc_cotizacion.domain.model.Cotizacion;
+import org.mac.taller.msvc_cotizacion.application.service.CotizacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,27 +1,22 @@
-package org.mac.taller.msvc_cotizacion.models.entity;
+package org.mac.taller.msvc_cotizacion.domain.model;
 
-import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name="cotizaciones")
+
 public class Cotizacion {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
     private Long vehiculoId;
     private String estado;
     
     private Double totalEstimado;
     private int diasInactividadEstimados;
     private LocalDateTime fechaCreacion;
-    
-    @ElementCollection
+
     private List<ItemCotizacion> items = new ArrayList<>();
-    
-    @Embedded
+
     private AutorizacionCliente autorizacion;
     
     public void agregarItem(ItemCotizacion item) {
@@ -36,7 +31,6 @@ public class Cotizacion {
         this.estado = "APROBADA";
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Long getVehiculoId() { return vehiculoId; }

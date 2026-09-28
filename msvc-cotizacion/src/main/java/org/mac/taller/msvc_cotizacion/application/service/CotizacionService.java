@@ -1,6 +1,6 @@
-package org.mac.taller.msvc_cotizacion.services;
+package org.mac.taller.msvc_cotizacion.application.service;
 
-import org.mac.taller.msvc_cotizacion.models.entity.Cotizacion;
+import org.mac.taller.msvc_cotizacion.domain.model.Cotizacion;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,15 +1,11 @@
-package org.mac.taller.msvc_cotizacion.models.entity;
-
-import jakarta.persistence.Embeddable;
+package org.mac.taller.msvc_cotizacion.domain.model;
 import java.time.LocalDateTime;
 
-@Embeddable
 public class AutorizacionCliente {
     private String metodoAutorizacion;
     private LocalDateTime fechaHora;
     private String evidenciaUrl;
-    
-    // Getters/Setters
+
     public String getMetodoAutorizacion() { return metodoAutorizacion; }
     public void setMetodoAutorizacion(String metodoAutorizacion) { this.metodoAutorizacion = metodoAutorizacion; }
     public LocalDateTime getFechaHora() { return fechaHora; }

@@ -1,14 +1,11 @@
-package org.mac.taller.msvc_cotizacion.models.entity;
+package org.mac.taller.msvc_cotizacion.domain.model;
 
-import jakarta.persistence.Embeddable;
-
-@Embeddable
 public class ItemCotizacion {
     private String descripcion;
     private Double precioUnitario;
     private int cantidad;
     
-    // Getters/Setters
+
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
     public Double getPrecioUnitario() { return precioUnitario; }
