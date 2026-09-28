@@ -1,6 +1,6 @@
-package org.mac.taller.msvc_orden_trabajo.models;
+package org.mac.taller.msvc_orden_trabajo.infrastructure.clients.dto;
 
-public class Bahia {
+public class BahiaDTO {
     private Long id;
     private String codigo;
     private String estado;

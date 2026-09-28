@@ -1,11 +1,11 @@
-package org.mac.taller.msvc_orden_trabajo.models.entity;
+package org.mac.taller.msvc_orden_trabajo.infrastructure.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name="ordenes_bahias")
-public class OrdenBahia {
+public class OrdenBahiaEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
@@ -16,17 +16,13 @@ public class OrdenBahia {
     private LocalDateTime fechaSalida;
     private String estadoAsignacion; // ACTIVA, HISTORICA
 
-    public OrdenBahia() {}
-    public OrdenBahia(Long bahiaId) {
+    public OrdenBahiaEntity() {}
+    public OrdenBahiaEntity(Long bahiaId) {
         this.bahiaId = bahiaId;
         this.fechaIngreso = LocalDateTime.now();
         this.estadoAsignacion = "ACTIVA";
     }
-    public void finalizarAsignacion() {
-        this.fechaSalida = LocalDateTime.now();
-        this.estadoAsignacion = "HISTORICA";
-    }
-    
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Long getBahiaId() { return bahiaId; }
