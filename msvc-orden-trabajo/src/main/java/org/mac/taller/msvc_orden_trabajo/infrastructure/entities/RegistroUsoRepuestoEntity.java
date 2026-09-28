@@ -1,9 +1,9 @@
-package org.mac.taller.msvc_orden_trabajo.models.entity;
+package org.mac.taller.msvc_orden_trabajo.infrastructure.entities;
 
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public class RegistroUsoRepuesto {
+public class RegistroUsoRepuestoEntity {
     private Long repuestoId; // ID Remoto a msvc-repuesto
     private int cantidadUtilizada;
 

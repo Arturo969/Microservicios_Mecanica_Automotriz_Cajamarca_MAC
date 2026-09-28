@@ -1,6 +1,7 @@
-package org.mac.taller.msvc_orden_trabajo.services;
+package org.mac.taller.msvc_orden_trabajo.application.services;
 
-import org.mac.taller.msvc_orden_trabajo.models.entity.OrdenTrabajo;
+import org.mac.taller.msvc_orden_trabajo.domain.model.OrdenTrabajo;
+import org.mac.taller.msvc_orden_trabajo.infrastructure.entities.OrdenTrabajoEntity;
 import java.util.List;
 import java.util.Optional;
 

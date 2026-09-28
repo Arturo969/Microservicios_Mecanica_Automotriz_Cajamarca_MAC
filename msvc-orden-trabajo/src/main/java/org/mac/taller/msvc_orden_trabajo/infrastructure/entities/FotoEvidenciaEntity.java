@@ -1,14 +1,14 @@
-package org.mac.taller.msvc_orden_trabajo.models.entity;
+package org.mac.taller.msvc_orden_trabajo.infrastructure.entities;
 
 import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;
 
 @Embeddable
-public class FotoEvidencia {
+public class FotoEvidenciaEntity {
     private String urlFoto;
     private LocalDateTime fechaCaptura;
 
-    public FotoEvidencia() {
+    public FotoEvidenciaEntity() {
         this.fechaCaptura = LocalDateTime.now();
     }
     

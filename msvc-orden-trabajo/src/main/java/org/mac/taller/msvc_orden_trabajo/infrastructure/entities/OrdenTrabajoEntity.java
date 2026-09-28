@@ -1,4 +1,4 @@
-package org.mac.taller.msvc_orden_trabajo.models.entity;
+package org.mac.taller.msvc_orden_trabajo.infrastructure.entities;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name="ordenes_trabajo")
-public class OrdenTrabajo {
+public class OrdenTrabajoEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long cotizacionId; // ID remoto
@@ -17,30 +17,12 @@ public class OrdenTrabajo {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="orden_id")
-    private List<TareaReparacion> tareas = new ArrayList<>();
+    private List<TareaReparacionEntity> tareas = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="orden_id")
-    private List<OrdenBahia> historialBahias = new ArrayList<>();
+    private List<OrdenBahiaEntity> historialBahias = new ArrayList<>();
 
-    // --- INVARIANTES ---
-    public void asignarBahia(OrdenBahia asignacion) {
-        historialBahias.stream()
-            .filter(b -> "ACTIVA".equals(b.getEstadoAsignacion()))
-            .forEach(OrdenBahia::finalizarAsignacion);
-        historialBahias.add(asignacion);
-    }
-
-    public void cerrarOrden() {
-        if (tareas.stream().anyMatch(t -> !t.isCompletada())) {
-            throw new IllegalStateException("No se puede cerrar la orden: hay tareas incompletas sin evidencia");
-        }
-        historialBahias.stream()
-            .filter(b -> "ACTIVA".equals(b.getEstadoAsignacion()))
-            .forEach(OrdenBahia::finalizarAsignacion);
-        this.cerrada = true;
-    }
-    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     
@@ -54,8 +36,8 @@ public class OrdenTrabajo {
     public void setCotizacionId(Long cotizacionId) { this.cotizacionId = cotizacionId; }
     public boolean isCerrada() { return cerrada; }
     public void setCerrada(boolean cerrada) { this.cerrada = cerrada; }
-    public List<TareaReparacion> getTareas() { return tareas; }
-    public void setTareas(List<TareaReparacion> tareas) { this.tareas = tareas; }
-    public List<OrdenBahia> getHistorialBahias() { return historialBahias; }
-    public void setHistorialBahias(List<OrdenBahia> historialBahias) { this.historialBahias = historialBahias; }
+    public List<TareaReparacionEntity> getTareas() { return tareas; }
+    public void setTareas(List<TareaReparacionEntity> tareas) { this.tareas = tareas; }
+    public List<OrdenBahiaEntity> getHistorialBahias() { return historialBahias; }
+    public void setHistorialBahias(List<OrdenBahiaEntity> historialBahias) { this.historialBahias = historialBahias; }
 }

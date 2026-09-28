@@ -1,7 +1,8 @@
-package org.mac.taller.msvc_orden_trabajo.controllers;
+package org.mac.taller.msvc_orden_trabajo.infrastructure.controllers;
 
-import org.mac.taller.msvc_orden_trabajo.models.entity.OrdenTrabajo;
-import org.mac.taller.msvc_orden_trabajo.services.OrdenTrabajoService;
+import org.mac.taller.msvc_orden_trabajo.domain.model.OrdenTrabajo;
+import org.mac.taller.msvc_orden_trabajo.infrastructure.entities.OrdenTrabajoEntity;
+import org.mac.taller.msvc_orden_trabajo.application.services.OrdenTrabajoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

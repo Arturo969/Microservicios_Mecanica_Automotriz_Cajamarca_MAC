@@ -1,10 +1,13 @@
-package org.mac.taller.msvc_orden_trabajo.services;
+package org.mac.taller.msvc_orden_trabajo.application.services;
 
-import org.mac.taller.msvc_orden_trabajo.clients.BahiaClientRest;
-import org.mac.taller.msvc_orden_trabajo.clients.TecnicoClientRest;
-import org.mac.taller.msvc_orden_trabajo.models.entity.OrdenBahia;
-import org.mac.taller.msvc_orden_trabajo.models.entity.OrdenTrabajo;
-import org.mac.taller.msvc_orden_trabajo.repositories.OrdenTrabajoRepository;
+import org.mac.taller.msvc_orden_trabajo.application.port.OrdenTrabajoRepositoryPort;
+import org.mac.taller.msvc_orden_trabajo.domain.model.OrdenBahia;
+import org.mac.taller.msvc_orden_trabajo.domain.model.OrdenTrabajo;
+import org.mac.taller.msvc_orden_trabajo.infrastructure.clients.BahiaClientRest;
+import org.mac.taller.msvc_orden_trabajo.infrastructure.clients.TecnicoClientRest;
+import org.mac.taller.msvc_orden_trabajo.infrastructure.entities.OrdenBahiaEntity;
+import org.mac.taller.msvc_orden_trabajo.infrastructure.entities.OrdenTrabajoEntity;
+import org.mac.taller.msvc_orden_trabajo.infrastructure.repositories.OrdenTrabajoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +19,7 @@ import java.util.Optional;
 public class OrdenTrabajoServiceImpl implements OrdenTrabajoService {
 
     @Autowired
-    private OrdenTrabajoRepository repository;
+    private OrdenTrabajoRepositoryPort repositoryPort;
     
     @Autowired
     private BahiaClientRest bahiaClient;
@@ -27,25 +30,25 @@ public class OrdenTrabajoServiceImpl implements OrdenTrabajoService {
     @Override
     @Transactional(readOnly = true)
     public List<OrdenTrabajo> listar() {
-        return (List<OrdenTrabajo>) repository.findAll();
+        return (List<OrdenTrabajo>) repositoryPort.listar();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<OrdenTrabajo> porId(Long id) {
-        return repository.findById(id);
+        return repositoryPort.buscarPorId(id);
     }
 
     @Override
     @Transactional
     public OrdenTrabajo guardar(OrdenTrabajo o) {
-        return repository.save(o);
+        return repositoryPort.guardar(o);
     }
 
     @Override
     @Transactional
     public OrdenTrabajo asignarABahia(Long ordenId, Long bahiaId) {
-        OrdenTrabajo orden = repository.findById(ordenId)
+        OrdenTrabajo orden = repositoryPort.buscarPorId(ordenId)
             .orElseThrow(() -> new IllegalArgumentException("Orden no encontrada"));
         
         // 1. Validar y ocupar remotamente la bahía mediante Feign
@@ -61,22 +64,22 @@ public class OrdenTrabajoServiceImpl implements OrdenTrabajoService {
         OrdenBahia nuevaAsignacion = new OrdenBahia(bahiaId);
         orden.asignarBahia(nuevaAsignacion);
         
-        return repository.save(orden);
+        return repositoryPort.guardar(orden);
     }
 
     @Override
     @Transactional
     public void eliminar(Long id) {
-        repository.deleteById(id);
+        repositoryPort.eliminar(id);
     }
 
     @Override
     @Transactional
     public void eliminarAsignacionesPorBahia(Long bahiaId) {
-        List<OrdenTrabajo> ordenes = (List<OrdenTrabajo>) repository.findAll();
+        List<OrdenTrabajo> ordenes = (List<OrdenTrabajo>) repositoryPort.listar();
         for(OrdenTrabajo o : ordenes) {
             o.getHistorialBahias().removeIf(b -> b.getBahiaId().equals(bahiaId));
-            repository.save(o);
+            repositoryPort.guardar(o);
         }
     }
 }

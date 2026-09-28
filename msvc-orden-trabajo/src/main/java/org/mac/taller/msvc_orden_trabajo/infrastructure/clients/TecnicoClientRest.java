@@ -1,4 +1,4 @@
-package org.mac.taller.msvc_orden_trabajo.clients;
+package org.mac.taller.msvc_orden_trabajo.infrastructure.clients;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
