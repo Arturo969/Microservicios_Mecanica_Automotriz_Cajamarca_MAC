@@ -1,24 +1,16 @@
-package org.mac.taller.msvc_bahia.models.entity;
+package org.mac.taller.msvc_bahia.infrastructure.entities;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="bahias")
-public class BahiaTrabajo {
+@Table(name = "bahias")
+public class BahiaTrabajoEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String codigo;
     private String estado; // DISPONIBLE, OCUPADA, MANTENIMIENTO
-    private String tipo; // ELEVADOR, PINTURA, DIAGNOSTICO
+    private String tipo;   // ELEVADOR, PINTURA, DIAGNOSTICO
 
-    public void ocupar() {
-        if (!"DISPONIBLE".equals(this.estado)) throw new IllegalStateException("La bahía no está disponible");
-        this.estado = "OCUPADA";
-    }
-    public void liberar() {
-        this.estado = "DISPONIBLE";
-    }
-    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getCodigo() { return codigo; }
