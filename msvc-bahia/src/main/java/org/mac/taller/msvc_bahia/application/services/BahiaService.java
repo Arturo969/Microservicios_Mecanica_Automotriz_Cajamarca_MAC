@@ -1,6 +1,7 @@
-package org.mac.taller.msvc_bahia.services;
+package org.mac.taller.msvc_bahia.application.services;
 
-import org.mac.taller.msvc_bahia.models.entity.BahiaTrabajo;
+import org.mac.taller.msvc_bahia.domain.model.BahiaTrabajo;
+
 import java.util.List;
 import java.util.Optional;
 

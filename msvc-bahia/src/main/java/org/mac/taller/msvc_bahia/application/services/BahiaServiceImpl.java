@@ -1,7 +1,8 @@
-package org.mac.taller.msvc_bahia.services;
+package org.mac.taller.msvc_bahia.application.services;
 
-import org.mac.taller.msvc_bahia.models.entity.BahiaTrabajo;
-import org.mac.taller.msvc_bahia.repositories.BahiaRepository;
+import org.mac.taller.msvc_bahia.application.port.BahiaRepositoryPort;
+import org.mac.taller.msvc_bahia.domain.model.BahiaTrabajo;
+import org.mac.taller.msvc_bahia.infrastructure.clients.OrdenTrabajoClientRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,33 +14,33 @@ import java.util.Optional;
 public class BahiaServiceImpl implements BahiaService {
 
     @Autowired
-    private BahiaRepository repository;
+    private BahiaRepositoryPort repositoryPort;
 
     @Autowired
-    private org.mac.taller.msvc_bahia.clients.OrdenTrabajoClientRest client;
+    private OrdenTrabajoClientRest client;
 
     @Override
     @Transactional(readOnly = true)
     public List<BahiaTrabajo> listar() {
-        return (List<BahiaTrabajo>) repository.findAll();
+        return repositoryPort.listar();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<BahiaTrabajo> porId(Long id) {
-        return repository.findById(id);
+        return repositoryPort.buscarPorId(id);
     }
 
     @Override
     @Transactional
     public BahiaTrabajo guardar(BahiaTrabajo b) {
-        return repository.save(b);
+        return repositoryPort.guardar(b);
     }
 
     @Override
     @Transactional
     public void eliminar(Long id) {
-        repository.deleteById(id);
+        repositoryPort.eliminar(id);
         client.eliminarAsignacionesPorBahia(id);
     }
 }
