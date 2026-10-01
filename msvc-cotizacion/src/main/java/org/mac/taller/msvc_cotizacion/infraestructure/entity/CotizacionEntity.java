@@ -22,7 +22,7 @@ public class CotizacionEntity {
     private LocalDateTime fechaCreacion;
 
     @ElementCollection
-    private List<ItemCotizacionEntity> items = new ArrayList<>();
+    private List<TareaReparacionEntity> tareas = new ArrayList<>();
 
     @Embedded
     private AutorizacionClienteEntity autorizacion;
@@ -75,12 +75,12 @@ public class CotizacionEntity {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public List<ItemCotizacionEntity> getItems() {
-        return items;
+    public List<TareaReparacionEntity> getTareas() {
+        return tareas;
     }
 
-    public void setItems(List<ItemCotizacionEntity> items) {
-        this.items = items;
+    public void setTareas(List<TareaReparacionEntity> tareas) {
+        this.tareas = tareas;
     }
 
     public AutorizacionClienteEntity getAutorizacion() {

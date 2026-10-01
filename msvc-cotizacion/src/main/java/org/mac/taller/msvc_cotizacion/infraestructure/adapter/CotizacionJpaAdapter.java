@@ -3,10 +3,10 @@ package org.mac.taller.msvc_cotizacion.infraestructure.adapter;
 import org.mac.taller.msvc_cotizacion.application.port.CotizacionRepositoryPort;
 import org.mac.taller.msvc_cotizacion.domain.model.AutorizacionCliente;
 import org.mac.taller.msvc_cotizacion.domain.model.Cotizacion;
-import org.mac.taller.msvc_cotizacion.domain.model.ItemCotizacion;
+import org.mac.taller.msvc_cotizacion.domain.model.TareaReparacion;
+import org.mac.taller.msvc_cotizacion.infraestructure.entity.TareaReparacionEntity;
 import org.mac.taller.msvc_cotizacion.infraestructure.entity.AutorizacionClienteEntity;
 import org.mac.taller.msvc_cotizacion.infraestructure.entity.CotizacionEntity;
-import org.mac.taller.msvc_cotizacion.infraestructure.entity.ItemCotizacionEntity;
 import org.mac.taller.msvc_cotizacion.infraestructure.repository.CotizacionJpaRepository;
 import org.springframework.stereotype.Component;
 
@@ -52,27 +52,26 @@ public class CotizacionJpaAdapter implements CotizacionRepositoryPort {
         cotizacion.setId(entity.getId());
         cotizacion.setVehiculoId(entity.getVehiculoId());
         cotizacion.setEstado(entity.getEstado());
-        cotizacion.setTotalEstimado(entity.getTotalEstimado());
         cotizacion.setDiasInactividadEstimados(
                 entity.getDiasInactividadEstimados()
         );
         cotizacion.setFechaCreacion(entity.getFechaCreacion());
 
         //ItemCotizacion
-        List<ItemCotizacion> items = entity.getItems()
+        List<TareaReparacion> tareas = entity.getTareas()
                 .stream()
-                .map(itemEntity -> {
-                    ItemCotizacion item = new ItemCotizacion();
+                .map(tareaEntity -> {
+                    TareaReparacion tarea = new TareaReparacion();
 
-                    item.setDescripcion(itemEntity.getDescripcion());
-                    item.setPrecioUnitario(itemEntity.getPrecioUnitario());
-                    item.setCantidad(itemEntity.getCantidad());
+                    tarea.setId(tareaEntity.getTareaId());
+                    tarea.setDescripcion(tareaEntity.getDescripcion());
+                    tarea.setCostoEstimado(tareaEntity.getCostoEstimado());
 
-                    return item;
+                    return tarea;
                 })
                 .collect(Collectors.toList());
 
-        cotizacion.setItems(items);
+        cotizacion.setTareas(tareas);
 
         //De autorizacionCliente
         if (entity.getAutorizacion() != null) {
@@ -112,22 +111,22 @@ public class CotizacionJpaAdapter implements CotizacionRepositoryPort {
         entity.setFechaCreacion(cotizacion.getFechaCreacion());
 
         //de ItemCotizacion
-        List<ItemCotizacionEntity> items = cotizacion.getItems()
+        List<TareaReparacionEntity> tareas = cotizacion.getTareas()
                 .stream()
-                .map(item -> {
+                .map(tarea -> {
 
-                    ItemCotizacionEntity itemEntity =
-                            new ItemCotizacionEntity();
+                    TareaReparacionEntity tareaEntity =
+                            new TareaReparacionEntity();
 
-                    itemEntity.setDescripcion(item.getDescripcion());
-                    itemEntity.setPrecioUnitario(item.getPrecioUnitario());
-                    itemEntity.setCantidad(item.getCantidad());
+                    tareaEntity.setTareaId(tarea.getId());
+                    tareaEntity.setDescripcion(tarea.getDescripcion());
+                    tareaEntity.setCostoEstimado(tarea.getCostoEstimado());
 
-                    return itemEntity;
+                    return tareaEntity;
                 })
                 .collect(Collectors.toList());
 
-        entity.setItems(items);
+        entity.setTareas(tareas);
 
         //de autorizacion
         if (cotizacion.getAutorizacion() != null) {

@@ -15,14 +15,23 @@ public class Cotizacion {
     private int diasInactividadEstimados;
     private LocalDateTime fechaCreacion;
 
-    private List<ItemCotizacion> items = new ArrayList<>();
+    private List<TareaReparacion> tareas = new ArrayList<>();
 
     private AutorizacionCliente autorizacion;
-    
-    public void agregarItem(ItemCotizacion item) {
-        this.items.add(item);
+
+    public void agregarTarea(TareaReparacion tarea) {
+        this.tareas.add(tarea);
+        calcularTotalEstimado();
     }
-    
+
+    public void calcularTotalEstimado() {
+        this.totalEstimado = tareas.stream()
+                .mapToDouble(tarea -> tarea.getCostoEstimado() != null
+                        ? tarea.getCostoEstimado()
+                        : 0.0)
+                .sum();
+    }
+
     public void aprobar(AutorizacionCliente autorizacion) {
         if(!"CREADA".equals(this.estado)) {
             throw new IllegalStateException("Solo cotizaciones CREADAS pueden aprobarse");
@@ -43,8 +52,11 @@ public class Cotizacion {
     public void setDiasInactividadEstimados(int diasInactividadEstimados) { this.diasInactividadEstimados = diasInactividadEstimados; }
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }
     public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
-    public List<ItemCotizacion> getItems() { return items; }
-    public void setItems(List<ItemCotizacion> items) { this.items = items; }
+    public List<TareaReparacion> getTareas() { return tareas;}
+    public void setTareas(List<TareaReparacion> tareas) {
+        this.tareas = tareas != null ? tareas : new ArrayList<>();
+        calcularTotalEstimado();
+    }
     public AutorizacionCliente getAutorizacion() { return autorizacion; }
     public void setAutorizacion(AutorizacionCliente autorizacion) { this.autorizacion = autorizacion; }
 }

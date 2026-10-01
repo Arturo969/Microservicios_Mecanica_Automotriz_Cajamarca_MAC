@@ -21,6 +21,7 @@ public class CotizacionController {
 
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Cotizacion c) {
+        c.calcularTotalEstimado();
         return ResponseEntity.ok(service.guardar(c));
     }
 
@@ -55,13 +56,10 @@ public class CotizacionController {
             Cotizacion db = o.get();
             db.setVehiculoId(cotAct.getVehiculoId());
             db.setEstado(cotAct.getEstado());
-            db.setTotalEstimado(cotAct.getTotalEstimado());
             db.setDiasInactividadEstimados(cotAct.getDiasInactividadEstimados());
             db.setFechaCreacion(cotAct.getFechaCreacion());
-            
-            db.getItems().clear();
-            db.getItems().addAll(cotAct.getItems());
-            
+            db.setTareas(cotAct.getTareas());
+
             return ResponseEntity.ok(service.guardar(db));
         }
         return ResponseEntity.notFound().build();
