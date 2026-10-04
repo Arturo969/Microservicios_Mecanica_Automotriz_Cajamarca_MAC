@@ -1,4 +1,4 @@
-package org.mac.taller.msvc_tecnico.infrastructure.adapters.outbound.persistence.entity;
+package org.mac.taller.msvc_tecnico.infrastructure.entities;
 
 import jakarta.persistence.Embeddable;
 import java.time.LocalTime;

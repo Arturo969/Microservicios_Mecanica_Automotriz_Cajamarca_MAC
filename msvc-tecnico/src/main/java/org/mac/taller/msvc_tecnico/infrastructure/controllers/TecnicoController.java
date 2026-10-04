@@ -1,11 +1,10 @@
-package org.mac.taller.msvc_tecnico.infrastructure.adapters.inbound.rest;
+package org.mac.taller.msvc_tecnico.infrastructure.controllers;
 
-import org.mac.taller.msvc_tecnico.domain.exception.TecnicoNotFoundException;
 import org.mac.taller.msvc_tecnico.domain.model.Tecnico;
-import org.mac.taller.msvc_tecnico.domain.ports.inbound.ITecnicoUseCase;
-import org.mac.taller.msvc_tecnico.infrastructure.adapters.inbound.rest.dto.TecnicoRequestDTO;
-import org.mac.taller.msvc_tecnico.infrastructure.adapters.inbound.rest.dto.TecnicoResponseDTO;
-import org.mac.taller.msvc_tecnico.infrastructure.adapters.inbound.rest.mapper.TecnicoRestMapper;
+import org.mac.taller.msvc_tecnico.application.services.TecnicoService;
+import org.mac.taller.msvc_tecnico.infrastructure.controllers.dto.TecnicoRequestDTO;
+import org.mac.taller.msvc_tecnico.infrastructure.controllers.dto.TecnicoResponseDTO;
+import org.mac.taller.msvc_tecnico.infrastructure.controllers.mapper.TecnicoRestMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +16,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/tecnico")
 public class TecnicoController {
 
-    private final ITecnicoUseCase tecnicoUseCase;
+    private final TecnicoService tecnicoUseCase;
     private final TecnicoRestMapper mapper;
 
-    public TecnicoController(ITecnicoUseCase tecnicoUseCase, TecnicoRestMapper mapper) {
+    public TecnicoController(TecnicoService tecnicoUseCase, TecnicoRestMapper mapper) {
         this.tecnicoUseCase = tecnicoUseCase;
         this.mapper = mapper;
     }
@@ -52,7 +51,7 @@ public class TecnicoController {
         try {
             Tecnico asignado = tecnicoUseCase.asignarAOrden(id);
             return ResponseEntity.ok(mapper.toResponseDTO(asignado));
-        } catch (TecnicoNotFoundException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         } catch (IllegalStateException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -64,7 +63,7 @@ public class TecnicoController {
         try {
             Tecnico liberado = tecnicoUseCase.liberar(id);
             return ResponseEntity.ok(mapper.toResponseDTO(liberado));
-        } catch (TecnicoNotFoundException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -75,7 +74,7 @@ public class TecnicoController {
             Tecnico tecnico = mapper.toDomain(dto);
             Tecnico editado = tecnicoUseCase.editar(id, tecnico);
             return ResponseEntity.ok(mapper.toResponseDTO(editado));
-        } catch (TecnicoNotFoundException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -85,7 +84,7 @@ public class TecnicoController {
         try {
             tecnicoUseCase.eliminar(id);
             return ResponseEntity.noContent().build();
-        } catch (TecnicoNotFoundException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }

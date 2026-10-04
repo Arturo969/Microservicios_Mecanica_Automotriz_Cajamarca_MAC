@@ -1,10 +1,10 @@
-package org.mac.taller.msvc_tecnico.infrastructure.adapters.outbound.persistence;
+package org.mac.taller.msvc_tecnico.infrastructure.adapters;
 
 import org.mac.taller.msvc_tecnico.domain.model.Tecnico;
-import org.mac.taller.msvc_tecnico.domain.ports.outbound.ITecnicoRepositoryPort;
-import org.mac.taller.msvc_tecnico.infrastructure.adapters.outbound.persistence.entity.TecnicoEntity;
-import org.mac.taller.msvc_tecnico.infrastructure.adapters.outbound.persistence.mapper.TecnicoPersistenceMapper;
-import org.mac.taller.msvc_tecnico.infrastructure.adapters.outbound.persistence.repository.SpringDataTecnicoRepository;
+import org.mac.taller.msvc_tecnico.application.port.TecnicoRepositoryPort;
+import org.mac.taller.msvc_tecnico.infrastructure.entities.TecnicoEntity;
+import org.mac.taller.msvc_tecnico.infrastructure.adapters.TecnicoPersistenceMapper;
+import org.mac.taller.msvc_tecnico.infrastructure.repositories.SpringDataTecnicoRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class TecnicoPersistenceAdapter implements ITecnicoRepositoryPort {
+public class TecnicoPersistenceAdapter implements TecnicoRepositoryPort {
 
     private final SpringDataTecnicoRepository springDataTecnicoRepository;
     private final TecnicoPersistenceMapper mapper;

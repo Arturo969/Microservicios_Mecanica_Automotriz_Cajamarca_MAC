@@ -1,0 +1,206 @@
+@startuml diagrama_agregados_mac
+
+' ==========================================
+' CONFIGURACIÓN DE ESTILO EMPRESARIAL Y SOBRIO
+' ==========================================
+skinparam {
+    BackgroundColor #FFFFFF
+    Shadowing false
+    RoundCorner 8
+    
+    PackageStyle rectangle
+    PackageBorderColor #4A4A4A
+    PackageBackgroundColor #F8F9FA
+    PackageTitleAlignment center
+    
+    ClassBackgroundColor #FFFFFF
+    ClassBorderColor #2C3E50
+    ClassHeaderBackgroundColor #E9ECEF
+    ClassFontColor #2C3E50
+    ClassFontSize 12
+    
+    ArrowColor #7F8C8D
+    ArrowThickness 1.5
+    
+    NoteBackgroundColor #FEF9E7
+    NoteBorderColor #F1C40F
+}
+
+' Estereotipos para DDD
+skinparam class {
+    BackgroundColor<<AggregateRoot>> #D4E6F1
+    BorderColor<<AggregateRoot>> #2980B9
+    
+    BackgroundColor<<Entity>> #E8F8F5
+    BorderColor<<Entity>> #16A085
+    
+    BackgroundColor<<ValueObject>> #FDEDEC
+    BorderColor<<ValueObject>> #C0392B
+}
+
+title Modelo de Agregados DDD - Sistema MAC (Microservicios)
+
+' ==========================================
+' AGREGADO: BAHÍA DE TRABAJO (msvc-bahia)
+' ==========================================
+package "Agregado BahiaTrabajo" {
+    class BahiaTrabajo <<AggregateRoot>> {
+        + id: Long
+        + codigo: String
+        + estado: String
+        + tipo: String
+        __
+        + ocupar()
+        + liberar()
+    }
+}
+
+' ==========================================
+' AGREGADO: TÉCNICO (msvc-tecnico)
+' ==========================================
+package "Agregado Tecnico" {
+    class Tecnico <<AggregateRoot>> {
+        + id: Long
+        + dni: String
+        + nombreCompleto: String
+        + estado: String
+        + especialidades: List<String>
+        __
+        + asignarAOrden()
+        + liberarTecnico()
+    }
+    
+    class TurnoHorario <<ValueObject>> {
+        + horaInicio: LocalTime
+        + horaFin: LocalTime
+    }
+    
+    Tecnico *-- "1" TurnoHorario : posee >
+}
+
+' ==========================================
+' AGREGADO: VEHÍCULO (msvc-vehiculo)
+' ==========================================
+package "Agregado Vehiculo" {
+    class Vehiculo <<AggregateRoot>> {
+        + id: Long
+        + placa: String
+        + vin: String
+        + marca: String
+        + modelo: String
+        + kilometrajeActual: Integer
+        + clienteId: Long
+        __
+        + actualizarKilometraje(nuevoKm)
+    }
+}
+
+' ==========================================
+' AGREGADO: COTIZACIÓN (msvc-cotizacion)
+' ==========================================
+package "Agregado Cotizacion" {
+    class Cotizacion <<AggregateRoot>> {
+        + id: Long
+        + vehiculoId: Long
+        + estado: String
+        + totalEstimado: Double
+        + diasInactividadEstimados: Integer
+        + fechaCreacion: LocalDateTime
+        __
+        + agregarTarea(tarea)
+        + calcularTotalEstimado()
+        + aprobar(autorizacion)
+    }
+    
+    class TareaReparacionCotizacion <<Entity>> {
+        + id: Long
+        + descripcion: String
+        + costoEstimado: Double
+    }
+    
+    class AutorizacionCliente <<ValueObject>> {
+        + metodoAutorizacion: String
+        + fechaHora: LocalDateTime
+        + evidenciaUrl: String
+    }
+    
+    Cotizacion *-- "many" TareaReparacionCotizacion : contiene >
+    Cotizacion *-- "0..1" AutorizacionCliente : validado por >
+}
+
+' ==========================================
+' AGREGADO: ORDEN DE TRABAJO (msvc-orden-trabajo)
+' ==========================================
+package "Agregado OrdenTrabajo" {
+    class OrdenTrabajo <<AggregateRoot>> {
+        + id: Long
+        + cotizacionId: Long
+        + vehiculoId: Long
+        + tecnicoAsignadoId: Long
+        + estado: String
+        + cerrada: boolean
+        __
+        + asignarBahia(asignacion)
+        + cerrarOrden()
+    }
+    
+    class TareaReparacionOT <<Entity>> {
+        + id: Long
+        + descripcion: String
+        + completada: boolean
+        __
+        + marcarCompletada()
+        + agregarEvidencia(foto)
+        + registrarRepuesto(repuesto)
+    }
+    
+    class OrdenBahia <<Entity>> {
+        + bahiaId: Long
+        + fechaAsignacion: LocalDateTime
+        + fechaSalida: LocalDateTime
+        + estadoAsignacion: String
+        __
+        + finalizarAsignacion()
+    }
+    
+    class FotoEvidencia <<ValueObject>> {
+        + urlFoto: String
+        + fechaCaptura: LocalDateTime
+    }
+    
+    class RegistroUsoRepuesto <<ValueObject>> {
+        + repuestoId: Long
+        + cantidadUtilizada: Integer
+    }
+    
+    OrdenTrabajo *-- "many" TareaReparacionOT : ejecuta >
+    OrdenTrabajo *-- "many" OrdenBahia : registra historial >
+    TareaReparacionOT *-- "many" FotoEvidencia : respalda >
+    TareaReparacionOT *-- "many" RegistroUsoRepuesto : consume >
+}
+
+' ==========================================
+' RELACIONES INTER-AGREGADOS (Por Referencia de ID)
+' ==========================================
+' Se usa línea punteada para denotar que la relación es por ID, 
+' manteniendo el desacoplamiento transaccional dictado por DDD.
+
+Cotizacion .down.> Vehiculo : " [vehiculoId] "
+OrdenTrabajo .up.> Cotizacion : " [cotizacionId] "
+OrdenTrabajo .up.> Vehiculo : " [vehiculoId] "
+OrdenTrabajo .left.> Tecnico : " [tecnicoAsignadoId] "
+OrdenBahia .left.> BahiaTrabajo : " [bahiaId] "
+
+' ==========================================
+' LEYENDA
+' ==========================================
+legend bottom right
+    |= Color |= Elemento DDD |= Característica |
+    |<back:#D4E6F1>   </back>| Raíz del Agregado | Punto de entrada, con Identidad (ID global), asegura la consistencia. |
+    |<back:#E8F8F5>   </back>| Entidad Local | Tiene Identidad (ID local), su ciclo de vida depende de la Raíz. |
+    |<back:#FDEDEC>   </back>| Objeto de Valor | Sin identidad, definido por sus atributos, es inmutable. |
+    |<U+25C6>--| Composición Fuerte | Persistencia atómica en la misma base de datos. |
+    |....>| Referencia Débil | Relación por ID entre diferentes Microservicios. |
+end legend
+
+@enduml

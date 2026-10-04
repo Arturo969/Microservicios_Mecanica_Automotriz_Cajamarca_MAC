@@ -3,16 +3,16 @@ package org.mac.taller.msvc_vehiculo.domain.model;
 public class Vehiculo {
 
     private Long id;
-    private Placa placa;
+    private String placa;
     private String vin;
     private String marca;
     private String modelo;
-    private Kilometraje kilometrajeActual;
+    private Integer kilometrajeActual;
     private Long clienteId;
 
     public Vehiculo() {}
 
-    public Vehiculo(Long id, Placa placa, String vin, String marca, String modelo, Kilometraje kilometrajeActual, Long clienteId) {
+    public Vehiculo(Long id, String placa, String vin, String marca, String modelo, Integer kilometrajeActual, Long clienteId) {
         this.id = id;
         this.placa = placa;
         this.vin = vin;
@@ -30,11 +30,11 @@ public class Vehiculo {
         this.id = id;
     }
 
-    public Placa getPlaca() {
+    public String getPlaca() {
         return placa;
     }
 
-    public void setPlaca(Placa placa) {
+    public void setPlaca(String placa) {
         this.placa = placa;
     }
 
@@ -62,11 +62,11 @@ public class Vehiculo {
         this.modelo = modelo;
     }
 
-    public Kilometraje getKilometrajeActual() {
+    public Integer getKilometrajeActual() {
         return kilometrajeActual;
     }
 
-    public void setKilometrajeActual(Kilometraje kilometrajeActual) {
+    public void setKilometrajeActual(Integer kilometrajeActual) {
         this.kilometrajeActual = kilometrajeActual;
     }
 

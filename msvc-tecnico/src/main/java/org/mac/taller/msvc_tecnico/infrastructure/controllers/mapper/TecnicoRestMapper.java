@@ -1,10 +1,10 @@
-package org.mac.taller.msvc_tecnico.infrastructure.adapters.inbound.rest.mapper;
+package org.mac.taller.msvc_tecnico.infrastructure.controllers.mapper;
 
 import org.mac.taller.msvc_tecnico.domain.model.Tecnico;
 import org.mac.taller.msvc_tecnico.domain.model.TurnoHorario;
-import org.mac.taller.msvc_tecnico.infrastructure.adapters.inbound.rest.dto.TecnicoRequestDTO;
-import org.mac.taller.msvc_tecnico.infrastructure.adapters.inbound.rest.dto.TecnicoResponseDTO;
-import org.mac.taller.msvc_tecnico.infrastructure.adapters.inbound.rest.dto.TurnoHorarioDTO;
+import org.mac.taller.msvc_tecnico.infrastructure.controllers.dto.TecnicoRequestDTO;
+import org.mac.taller.msvc_tecnico.infrastructure.controllers.dto.TecnicoResponseDTO;
+import org.mac.taller.msvc_tecnico.infrastructure.controllers.dto.TurnoHorarioDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

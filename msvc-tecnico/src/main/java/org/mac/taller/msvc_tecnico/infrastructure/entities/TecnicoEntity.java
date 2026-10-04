@@ -1,19 +1,32 @@
-package org.mac.taller.msvc_tecnico.infrastructure.adapters.inbound.rest.dto;
+package org.mac.taller.msvc_tecnico.infrastructure.entities;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TecnicoRequestDTO {
+@Entity
+@Table(name = "tecnicos")
+public class TecnicoEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String dni;
     private String nombreCompleto;
-    private List<String> especialidades = new ArrayList<>();
-    private String estado;
-    private TurnoHorarioDTO turnoLaboral;
 
-    public TecnicoRequestDTO() {
+    @ElementCollection
+    private List<String> especialidades = new ArrayList<>();
+
+    private String estado;
+
+    @Embedded
+    private TurnoHorarioEntity turnoLaboral;
+
+    public TecnicoEntity() {
     }
 
-    public TecnicoRequestDTO(String dni, String nombreCompleto, List<String> especialidades, String estado, TurnoHorarioDTO turnoLaboral) {
+    public TecnicoEntity(Long id, String dni, String nombreCompleto, List<String> especialidades, String estado, TurnoHorarioEntity turnoLaboral) {
+        this.id = id;
         this.dni = dni;
         this.nombreCompleto = nombreCompleto;
         if (especialidades != null) {
@@ -21,6 +34,14 @@ public class TecnicoRequestDTO {
         }
         this.estado = estado;
         this.turnoLaboral = turnoLaboral;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDni() {
@@ -55,11 +76,11 @@ public class TecnicoRequestDTO {
         this.estado = estado;
     }
 
-    public TurnoHorarioDTO getTurnoLaboral() {
+    public TurnoHorarioEntity getTurnoLaboral() {
         return turnoLaboral;
     }
 
-    public void setTurnoLaboral(TurnoHorarioDTO turnoLaboral) {
+    public void setTurnoLaboral(TurnoHorarioEntity turnoLaboral) {
         this.turnoLaboral = turnoLaboral;
     }
 }

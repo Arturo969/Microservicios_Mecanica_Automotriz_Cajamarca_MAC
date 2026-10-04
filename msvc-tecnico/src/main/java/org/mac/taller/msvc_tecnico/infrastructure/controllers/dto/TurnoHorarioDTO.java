@@ -1,4 +1,4 @@
-package org.mac.taller.msvc_tecnico.infrastructure.adapters.inbound.rest.dto;
+package org.mac.taller.msvc_tecnico.infrastructure.controllers.dto;
 
 import java.time.LocalTime;
 

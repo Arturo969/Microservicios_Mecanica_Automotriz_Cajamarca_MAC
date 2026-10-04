@@ -1,31 +1,20 @@
-package org.mac.taller.msvc_tecnico.infrastructure.adapters.outbound.persistence.entity;
+package org.mac.taller.msvc_tecnico.infrastructure.controllers.dto;
 
-import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "tecnicos")
-public class TecnicoEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TecnicoResponseDTO {
     private Long id;
-
     private String dni;
     private String nombreCompleto;
-
-    @ElementCollection
     private List<String> especialidades = new ArrayList<>();
-
     private String estado;
+    private TurnoHorarioDTO turnoLaboral;
 
-    @Embedded
-    private TurnoHorarioEntity turnoLaboral;
-
-    public TecnicoEntity() {
+    public TecnicoResponseDTO() {
     }
 
-    public TecnicoEntity(Long id, String dni, String nombreCompleto, List<String> especialidades, String estado, TurnoHorarioEntity turnoLaboral) {
+    public TecnicoResponseDTO(Long id, String dni, String nombreCompleto, List<String> especialidades, String estado, TurnoHorarioDTO turnoLaboral) {
         this.id = id;
         this.dni = dni;
         this.nombreCompleto = nombreCompleto;
@@ -76,11 +65,11 @@ public class TecnicoEntity {
         this.estado = estado;
     }
 
-    public TurnoHorarioEntity getTurnoLaboral() {
+    public TurnoHorarioDTO getTurnoLaboral() {
         return turnoLaboral;
     }
 
-    public void setTurnoLaboral(TurnoHorarioEntity turnoLaboral) {
+    public void setTurnoLaboral(TurnoHorarioDTO turnoLaboral) {
         this.turnoLaboral = turnoLaboral;
     }
 }

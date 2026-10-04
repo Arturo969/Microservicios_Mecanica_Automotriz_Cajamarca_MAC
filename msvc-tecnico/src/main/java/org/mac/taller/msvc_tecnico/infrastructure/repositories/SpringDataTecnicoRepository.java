@@ -1,6 +1,6 @@
-package org.mac.taller.msvc_tecnico.infrastructure.adapters.outbound.persistence.repository;
+package org.mac.taller.msvc_tecnico.infrastructure.repositories;
 
-import org.mac.taller.msvc_tecnico.infrastructure.adapters.outbound.persistence.entity.TecnicoEntity;
+import org.mac.taller.msvc_tecnico.infrastructure.entities.TecnicoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

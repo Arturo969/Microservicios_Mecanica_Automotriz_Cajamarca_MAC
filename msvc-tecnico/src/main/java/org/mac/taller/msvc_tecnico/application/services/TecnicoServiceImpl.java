@@ -1,18 +1,20 @@
-package org.mac.taller.msvc_tecnico.application.usecase;
+package org.mac.taller.msvc_tecnico.application.services;
 
-import org.mac.taller.msvc_tecnico.domain.exception.TecnicoNotFoundException;
 import org.mac.taller.msvc_tecnico.domain.model.Tecnico;
-import org.mac.taller.msvc_tecnico.domain.ports.inbound.ITecnicoUseCase;
-import org.mac.taller.msvc_tecnico.domain.ports.outbound.ITecnicoRepositoryPort;
+import org.mac.taller.msvc_tecnico.application.services.TecnicoService;
+import org.mac.taller.msvc_tecnico.application.port.TecnicoRepositoryPort;
 
 import java.util.List;
 import java.util.Optional;
 
-public class TecnicoUseCaseImpl implements ITecnicoUseCase {
+import org.springframework.stereotype.Service;
 
-    private final ITecnicoRepositoryPort tecnicoRepositoryPort;
+@Service
+public class TecnicoServiceImpl implements TecnicoService {
 
-    public TecnicoUseCaseImpl(ITecnicoRepositoryPort tecnicoRepositoryPort) {
+    private final TecnicoRepositoryPort tecnicoRepositoryPort;
+
+    public TecnicoServiceImpl(TecnicoRepositoryPort tecnicoRepositoryPort) {
         this.tecnicoRepositoryPort = tecnicoRepositoryPort;
     }
 
@@ -34,7 +36,7 @@ public class TecnicoUseCaseImpl implements ITecnicoUseCase {
     @Override
     public Tecnico editar(Long id, Tecnico tecnico) {
         Tecnico db = tecnicoRepositoryPort.findById(id)
-                .orElseThrow(() -> new TecnicoNotFoundException(id));
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró el técnico con id: " + id));
         db.setDni(tecnico.getDni());
         db.setNombreCompleto(tecnico.getNombreCompleto());
         db.setEstado(tecnico.getEstado());
@@ -49,7 +51,7 @@ public class TecnicoUseCaseImpl implements ITecnicoUseCase {
     @Override
     public Tecnico asignarAOrden(Long id) {
         Tecnico tecnico = tecnicoRepositoryPort.findById(id)
-                .orElseThrow(() -> new TecnicoNotFoundException(id));
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró el técnico con id: " + id));
         tecnico.asignarAOrden();
         return tecnicoRepositoryPort.save(tecnico);
     }
@@ -57,7 +59,7 @@ public class TecnicoUseCaseImpl implements ITecnicoUseCase {
     @Override
     public Tecnico liberar(Long id) {
         Tecnico tecnico = tecnicoRepositoryPort.findById(id)
-                .orElseThrow(() -> new TecnicoNotFoundException(id));
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró el técnico con id: " + id));
         tecnico.liberarTecnico();
         return tecnicoRepositoryPort.save(tecnico);
     }
@@ -65,7 +67,7 @@ public class TecnicoUseCaseImpl implements ITecnicoUseCase {
     @Override
     public void eliminar(Long id) {
         if (!tecnicoRepositoryPort.existsById(id)) {
-            throw new TecnicoNotFoundException(id);
+            throw new IllegalArgumentException("No se encontró el técnico con id: " + id);
         }
         tecnicoRepositoryPort.deleteById(id);
     }

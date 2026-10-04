@@ -1,21 +1,19 @@
-package org.mac.taller.msvc_tecnico.infrastructure.adapters.inbound.rest.dto;
+package org.mac.taller.msvc_tecnico.infrastructure.controllers.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TecnicoResponseDTO {
-    private Long id;
+public class TecnicoRequestDTO {
     private String dni;
     private String nombreCompleto;
     private List<String> especialidades = new ArrayList<>();
     private String estado;
     private TurnoHorarioDTO turnoLaboral;
 
-    public TecnicoResponseDTO() {
+    public TecnicoRequestDTO() {
     }
 
-    public TecnicoResponseDTO(Long id, String dni, String nombreCompleto, List<String> especialidades, String estado, TurnoHorarioDTO turnoLaboral) {
-        this.id = id;
+    public TecnicoRequestDTO(String dni, String nombreCompleto, List<String> especialidades, String estado, TurnoHorarioDTO turnoLaboral) {
         this.dni = dni;
         this.nombreCompleto = nombreCompleto;
         if (especialidades != null) {
@@ -23,14 +21,6 @@ public class TecnicoResponseDTO {
         }
         this.estado = estado;
         this.turnoLaboral = turnoLaboral;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getDni() {

@@ -1,11 +1,11 @@
-package org.mac.taller.msvc_tecnico.domain.ports.inbound;
+package org.mac.taller.msvc_tecnico.application.services;
 
 import org.mac.taller.msvc_tecnico.domain.model.Tecnico;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ITecnicoUseCase {
+public interface TecnicoService {
     List<Tecnico> listar();
     Optional<Tecnico> porId(Long id);
     Tecnico guardar(Tecnico tecnico);
